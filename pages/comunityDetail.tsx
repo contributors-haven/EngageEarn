@@ -1,12 +1,19 @@
 import AnimeInfo from "@/components/CampaignInfo";
 import NextAnime from "@/components/ActiveCampaign";
 import TrendingAnime from "@/components/TreandingAnime";
-import { Box, Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Image,
+  Text,
+  useBreakpointValue,
+  useToast,
+} from "@chakra-ui/react";
 import Leaderboard from "./leaderboard";
 import CampaignInfo from "@/components/CampaignInfo";
 import ActiveCampaign from "@/components/ActiveCampaign";
 
-export default function watchAnime() {
+export default function CommunityDetail() {
   return (
     <Box pb={10} height={"auto"}>
       <Flex flexDirection={"column"} alignItems={"center"} mt={"10"}>

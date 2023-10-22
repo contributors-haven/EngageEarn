@@ -13,14 +13,24 @@ import "@fontsource/poppins/900.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  zora,
+  goerli,
+} from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { useEffect, useState } from "react";
+import Script from "next/script";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora],
+  [goerli],
   [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID as string }),
+    //alchemyProvider({ apiKey: process.env.ALCHEMY_ID as string }),
     publicProvider(),
   ]
 );
@@ -86,15 +96,30 @@ const chakraTheme: ThemeConfig = extendTheme({
 });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const [rendered, setRendered] = useState(false);
+
+  useEffect(() => {
+    setRendered(true);
+  }, []);
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <ChakraProvider resetCSS theme={chakraTheme}>
-          <Layout title="Earn by Contributing Communities">
-            <Component {...pageProps} />
-          </Layout>
-        </ChakraProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <>
+      {rendered && (
+        <>
+          <Script
+            src="https://platform.twitter.com/widgets.js"
+            onLoad={() => console.log("Loaded twitter script!!!")}
+          ></Script>
+          <WagmiConfig config={wagmiConfig}>
+            <RainbowKitProvider chains={chains}>
+              <ChakraProvider resetCSS theme={chakraTheme}>
+                <Layout title="Earn by Contributing Communities">
+                  <Component {...pageProps} />
+                </Layout>
+              </ChakraProvider>
+            </RainbowKitProvider>
+          </WagmiConfig>
+        </>
+      )}
+    </>
   );
 }

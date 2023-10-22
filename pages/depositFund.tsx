@@ -13,9 +13,13 @@ import {
   InputGroup,
   InputLeftAddon,
   Checkbox,
+  useToast,
 } from "@chakra-ui/react";
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import engageEarnABI from "../abi/engagEearn.json";
+import { useContractWrite } from "wagmi";
+import { parseEther } from "viem";
 
 const brandPrimary = defineStyle({
   textDecoration: "underline",
@@ -29,10 +33,57 @@ const brandPrimary = defineStyle({
   },
 });
 
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
+import { wait } from "@/utills/time";
 
-export default function RegisterCommunity() {
+export default function DepositFund() {
+  const [isLoading, setLoading] = useState(false);
   const router = useRouter();
+  const toast = useToast();
+  const [deposit, setDeposit] = useState("");
+
+  const { data, isSuccess, write, writeAsync } = useContractWrite({
+    address: "0x4A8598A4FAfe5145E445f4aDaD466842D8202120",
+    abi: engageEarnABI,
+    functionName: "depositDAIFunds",
+    args: [deposit],
+  });
+
+  const handleDepositInput = (e: any) => {
+    console.log("amunt", e.target.value);
+    try {
+      const amountDai = e.target.value;
+      const amountWei = parseEther(amountDai);
+
+      setDeposit(amountWei.toString());
+      // setDeposit(amountDai);
+    } catch (error) {
+      return;
+    }
+  };
+
+  const depositFund = async () => {
+    setLoading(true);
+    try {
+      await writeAsync();
+    } catch (error) {}
+
+    await wait(4000);
+    setLoading(false);
+    toast({
+      title: "Successfully Deposited.",
+      description: (
+        <Link href="https://goerli.etherscan.io/tx/0x7f3d2ddd8dbdbdaf4e266d877365831e033580c90096adec25d43a9733b82fe4">
+          "https://goerli.etherscan.io/tx/0x7f3d2ddd8dbdbdaf4e266d877365831e033580c90096adec25d43a9733b82fe4"{" "}
+        </Link>
+      ),
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+    // router.push("/depositFund");
+  };
+
   return (
     <Flex
       height={{ base: "70vw", md: "48vw" }}
@@ -74,7 +125,11 @@ export default function RegisterCommunity() {
               </Text>
               <InputGroup size={"lg"}>
                 <InputLeftAddon borderColor="black" children="Amount DAI" />
-                <Input borderColor="black" focusBorderColor="brand.blue" />
+                <Input
+                  borderColor="black"
+                  focusBorderColor="brand.blue"
+                  onChange={handleDepositInput}
+                />
               </InputGroup>
 
               <Checkbox fontSize={"xl"} fontWeight={"bold"} defaultChecked>
@@ -91,6 +146,8 @@ export default function RegisterCommunity() {
                 fontSize={"2xl"}
                 fontWeight={700}
                 _hover={{ bg: "brand.orange", shadow: "md" }}
+                onClick={depositFund}
+                isLoading={isLoading}
               >
                 Deposit Community Fund
               </Button>
@@ -104,16 +161,13 @@ export default function RegisterCommunity() {
             width={"100%"}
             height={"30rem"}
           >
-            <Text fontSize={"2xl"} fontWeight={"bold"} mb={"7"}>
-              Total Commnunity Balance in DAI
-            </Text>
             <Flex
               flexDirection={"row"}
               justifyContent={"center"}
               alignItems={"center"}
               mb={"10"}
             >
-              <Flex
+              {/* <Flex
                 fontSize={"xl"}
                 fontWeight={"bold"}
                 width={"10rem"}
@@ -127,7 +181,7 @@ export default function RegisterCommunity() {
               </Flex>
               <Text paddingLeft={"5"} fontSize={"2xl"} fontWeight={"base"}>
                 DAI
-              </Text>
+              </Text> */}
             </Flex>
             <Button
               size={useBreakpointValue({ base: "md", md: "lg" })}

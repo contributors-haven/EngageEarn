@@ -1,8 +1,9 @@
 import FileUpload from "@/components/FileUpload";
+import { insertCampData } from "@/utills/tableland";
 import { CalendarIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  SimpleGrid,
+  CircularProgress,
+  CircularProgressLabel,
   Button,
   Flex,
   Heading,
@@ -16,9 +17,15 @@ import {
   InputLeftAddon,
   Checkbox,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
+// import { parseEther } from "ethers";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useContractWrite } from "wagmi";
+import engageEarnABI from "../abi/engagEearn.json";
+import { parseEther } from "viem";
 
 const brandPrimary = defineStyle({
   textDecoration: "underline",
@@ -35,6 +42,63 @@ const brandPrimary = defineStyle({
 export default function RegisterCommunity() {
   const router = useRouter();
   const toast = useToast();
+
+  const [campaignDeposit, setCampaignDeposit] = useState("");
+  const [isLoading, setLoading] = useState(false);
+
+  const { data, isSuccess, write, writeAsync } = useContractWrite({
+    address: "0x4A8598A4FAfe5145E445f4aDaD466842D8202120",
+    abi: engageEarnABI,
+    functionName: "createCampaignPool",
+    args: [campaignDeposit],
+  });
+
+  const handleCampagnInput = (e: any) => {
+    console.log("amunt", e.target.value);
+    try {
+      const amountDai = e.target.value;
+      const amountWei = parseEther(amountDai).toString();
+
+      console.log("amuntWei", amountWei);
+      setCampaignDeposit(amountWei);
+      // setDeposit(amountDai);
+    } catch (error) {
+      return;
+    }
+  };
+
+  const depositCampaignFund = async () => {
+    setLoading(true);
+    await createCamp();
+    // await writeAsync();
+
+    // router.push("/depositFund");
+    setLoading(false);
+  };
+
+  // Tableland - Create a Campaign Table
+  const createCamp = async () => {
+    console.log("campdeposit:", campaignDeposit);
+    try {
+      await insertCampData({
+        campaign_name: "Spark Campaign",
+        amount_dai: campaignDeposit,
+      });
+    } catch (error) {}
+    // <CircularProgress isIndeterminate color="green.300" />;
+    toast({
+      title: "Successfully Campaign Created.",
+      description: (
+        <Link href="https://tablescan.io/campaigns_11155111_301">
+          "https://tablescan.io/campaigns_11155111_301"{" "}
+        </Link>
+      ),
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
   return (
     <Flex
       height="45vw"
@@ -119,7 +183,11 @@ export default function RegisterCommunity() {
 
             <InputGroup size={"lg"}>
               <InputLeftAddon borderColor="black" children="Amount DAI" />
-              <Input borderColor="black" focusBorderColor="brand.blue" />
+              <Input
+                borderColor="black"
+                focusBorderColor="brand.blue"
+                onChange={handleCampagnInput}
+              />
             </InputGroup>
 
             <Checkbox fontSize={"xl"} fontWeight={"bold"} defaultChecked>
@@ -139,15 +207,8 @@ export default function RegisterCommunity() {
             fontSize={"2xl"}
             fontWeight={700}
             _hover={{ bg: "brand.orange", shadow: "md" }}
-            onClick={() =>
-              toast({
-                title: "Campaign Uploaded Successfully.",
-                description: "We've uploaded your Community Campaign.",
-                status: "success",
-                duration: 1000,
-                isClosable: true,
-              })
-            }
+            onClick={() => depositCampaignFund()}
+            isLoading={isLoading}
           >
             Submit Campaign
           </Button>

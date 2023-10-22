@@ -17,9 +17,15 @@ import {
   InputLeftElement,
   HStack,
   VStack,
+  Toast,
+  useToast,
 } from "@chakra-ui/react";
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+
+import engageEarnABI from "../abi/engagEearn.json";
+
+import { useContractWrite } from "wagmi";
 
 const brandPrimary = defineStyle({
   textDecoration: "underline",
@@ -34,9 +40,35 @@ const brandPrimary = defineStyle({
 });
 
 import { ReactElement } from "react";
+import { wait } from "@/utills/time";
 
 export default function RegisterCommunity() {
   const router = useRouter();
+  const toast = useToast();
+
+  const { data, isLoading, isSuccess, write, writeAsync } = useContractWrite({
+    address: "0x4A8598A4FAfe5145E445f4aDaD466842D8202120",
+    abi: engageEarnABI,
+    functionName: "registerOrg",
+  });
+
+  const registerUser = async () => {
+    await writeAsync();
+    toast({
+      title: "Successfully Community Account Created.",
+      description: (
+        <Link href="https://goerli.etherscan.io/tx/0x7f3d2ddd8dbdbdaf4e266d877365831e033580c90096adec25d43a9733b82fe4">
+          "https://goerli.etherscan.io/tx/0x7f3d2ddd8dbdbdaf4e266d877365831e033580c90096adec25d43a9733b82fe4"{" "}
+        </Link>
+      ),
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+    await wait(5000);
+    router.push("/depositFund");
+  };
+
   return (
     <Flex
       height={{ base: "70vw", md: "47vw" }}
@@ -133,10 +165,11 @@ export default function RegisterCommunity() {
             fontSize={"2xl"}
             fontWeight={700}
             _hover={{ bg: "brand.orange", shadow: "md" }}
-            onClick={() => router.push("/depositFund")}
+            onClick={() => registerUser()}
           >
             Register Commnunity
           </Button>
+          {isLoading && <div>Check Wallet</div>}
         </Flex>
       </Flex>
     </Flex>

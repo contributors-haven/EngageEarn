@@ -6,9 +6,73 @@ import {
   VStack,
   Grid,
   GridItem,
+  Button,
+  useToast,
 } from "@chakra-ui/react";
 
+import engageEarnABI from "../abi/engagEearn.json";
+
+import { useContractWrite } from "wagmi";
+import Link from "next/link";
+import { wait } from "@/utills/time";
+import { useState } from "react";
+
 export default function ActiveCampaign() {
+  const [isLoading, setLoading] = useState(false);
+  const toast = useToast();
+  const [verifyUser, setVerifyUser] = useState("");
+
+  const { data, isSuccess, write, writeAsync } = useContractWrite({
+    address: "0xF2c3600751921EEf63894934187Af0Cb19bD5507",
+    abi: engageEarnABI,
+    functionName: "increment",
+  });
+
+  const {
+    data: rewardData,
+    isSuccess: rewardSuccess,
+    write: rewardWrite,
+    writeAsync: rewardAsync,
+  } = useContractWrite({
+    address: "0x4A8598A4FAfe5145E445f4aDaD466842D8202120",
+    abi: engageEarnABI,
+    functionName: "rewardCampaignParticipants",
+    args: [0],
+  });
+
+  const VerifyUser = async () => {
+    setLoading(true);
+    await writeAsync();
+
+    try {
+    } catch (error) {}
+    await wait(3000);
+    setLoading(false);
+    toast({
+      title: "Verification Success",
+
+      status: "success",
+      duration: 4000,
+      isClosable: true,
+    });
+  };
+
+  const getReward = async () => {
+    setLoading(true);
+    await writeAsync();
+
+    try {
+    } catch (error) {}
+    await wait(3000);
+    setLoading(false);
+    toast({
+      title: "Rewards Distrbuted",
+
+      status: "success",
+      duration: 4000,
+      isClosable: true,
+    });
+  };
   return (
     <Box mb={"3"}>
       <VStack alignItems={"flex-start"} pt={"20"}>
@@ -43,11 +107,42 @@ export default function ActiveCampaign() {
                 October 18, 2023
               </a>
             </blockquote>{" "}
-            <script
-              async
-              src="https://platform.twitter.com/widgets.js"
-              charSet="utf-8"
-            ></script>
+            {!isSuccess && (
+              <Button
+                size={"md"}
+                // bgGradient="linear(to-l, #7928CA, brand.pink)"
+                bg={"brand.blue"}
+                p={"4"}
+                px={"10"}
+                fontSize={"xl"}
+                rounded={"lg"}
+                color={"white"}
+                fontWeight={700}
+                _hover={{ bg: "brand.orange" }}
+                onClick={() => VerifyUser()}
+                isLoading={isLoading}
+              >
+                Verify
+              </Button>
+            )}
+            {isSuccess && (
+              <Button
+                size={"md"}
+                // bgGradient="linear(to-l, #7928CA, brand.pink)"
+                bg={"brand.blue"}
+                p={"4"}
+                px={"10"}
+                fontSize={"xl"}
+                rounded={"lg"}
+                color={"white"}
+                fontWeight={700}
+                _hover={{ bg: "brand.orange" }}
+                onClick={() => getReward()}
+                isLoading={isLoading}
+              >
+                Reward
+              </Button>
+            )}
           </GridItem>
 
           <GridItem w="100%" h="max-content">
@@ -72,11 +167,21 @@ export default function ActiveCampaign() {
                 October 13, 2023
               </a>
             </blockquote>{" "}
-            <script
-              async
-              src="https://platform.twitter.com/widgets.js"
-              charSet="utf-8"
-            ></script>
+            <Button
+              size={"md"}
+              // bgGradient="linear(to-l, #7928CA, brand.pink)"
+              bg={"brand.blue"}
+              p={"4"}
+              px={"10"}
+              fontSize={"xl"}
+              rounded={"lg"}
+              color={"white"}
+              fontWeight={700}
+              _hover={{ bg: "brand.orange" }}
+              onClick={() => VerifyUser()}
+            >
+              Verify
+            </Button>
           </GridItem>
           <GridItem w="100%" h="max-content">
             <blockquote className="twitter-tweet">
@@ -99,11 +204,21 @@ export default function ActiveCampaign() {
                 October 17, 2023
               </a>
             </blockquote>{" "}
-            <script
-              async
-              src="https://platform.twitter.com/widgets.js"
-              charSet="utf-8"
-            ></script>
+            <Button
+              size={"md"}
+              // bgGradient="linear(to-l, #7928CA, brand.pink)"
+              bg={"brand.blue"}
+              p={"4"}
+              px={"10"}
+              fontSize={"xl"}
+              rounded={"lg"}
+              color={"white"}
+              fontWeight={700}
+              _hover={{ bg: "brand.orange" }}
+              onClick={() => VerifyUser()}
+            >
+              Verify
+            </Button>
           </GridItem>
         </Grid>
       </VStack>

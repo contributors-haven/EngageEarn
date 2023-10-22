@@ -137,9 +137,8 @@ export default function CommunityList() {
                       _hover={{ bg: "brand.orange" }}
                       mt={4}
                       bg={"brand.blue"}
-                      onClick={() => router.push("/comunityDetail")}
                     >
-                      Check Details
+                      <Link href="/comunityDetail">Check Detail</Link>
                     </Button>
                   </Stack>
                 </ChakraBox>

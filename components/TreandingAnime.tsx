@@ -23,7 +23,29 @@ export default function TrendingAnime() {
             borderColor={"brand.yellow"}
           >
             <Image
-              src="/images/communityList/Scroll.png"
+              src="/images/communityList/Sismo.png"
+              boxSize={"fit-content"}
+            />
+          </GridItem>
+          <GridItem
+            w="22rem"
+            h="22rem"
+            border={"5px solid"}
+            borderColor={"brand.yellow"}
+          >
+            <Image
+              src="/images/communityList/Tableland.png"
+              boxSize={"fit-content"}
+            />
+          </GridItem>
+          <GridItem
+            w="22rem"
+            h="22rem"
+            border={"5px solid"}
+            borderColor={"brand.yellow"}
+          >
+            <Image
+              src="/images/communityList/EthGlobal.png"
               boxSize={"fit-content"}
             />
           </GridItem>
@@ -37,22 +59,6 @@ export default function TrendingAnime() {
               src="/images/communityList/Spark Protocol.png"
               boxSize={"fit-content"}
             />
-          </GridItem>
-          <GridItem
-            w="22rem"
-            h="22rem"
-            border={"5px solid"}
-            borderColor={"brand.yellow"}
-          >
-            <Image src="/images/mu-bg2.png" boxSize={"fit-content"} />
-          </GridItem>
-          <GridItem
-            w="22rem"
-            h="22rem"
-            border={"5px solid"}
-            borderColor={"brand.yellow"}
-          >
-            <Image src="/images/mu-bg2.png" boxSize={"fit-content"} />
           </GridItem>
         </Grid>
       </VStack>
