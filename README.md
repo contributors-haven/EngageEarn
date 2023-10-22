@@ -26,7 +26,7 @@ yarn dev
 ```
 
 # Contract (Inside EngageEarn-contracts git Repo)
-[https://github.com/contributors-haven/EngageEarn-contracts](https://github.com/contributors-haven/EngageEarn/tree/main/engage-contracts)https://github.com/contributors-haven/EngageEarn/tree/main/engage-contracts
+[https://github.com/contributors-haven/EngageEarn-contracts](https://github.com/contributors-haven/EngageEarn/tree/main/engage-contracts)
 
 
 ## Roadmap
