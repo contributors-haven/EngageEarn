@@ -1,0 +1,40 @@
+# Query: animeList
+# ContextLines: 1
+
+9 results - 4 files
+`
+components/CommunityList.tsx:
+  33  const imageContext = require.context(
+  34:   "../public/images/commnunityList",
+  35    false,
+
+  45  
+  46: export default function CommunityList() {
+  47    const { isOpen, onOpen, onClose } = useDisclosure();
+
+  85                w="20vw"
+  86:               backgroundImage={`url('/images/communityList/${image.image}')`}
+  87                backgroundSize={"cover"}
+
+components/TreandingAnime.tsx:
+  24            >
+  25:             <Image src="/images/communityList/Scroll.png" boxSize={"fit-content"} />
+  26            </GridItem>
+
+  33              <Image
+  34:               src="/images/communityList/Spark Protocol.png"
+  35                boxSize={"fit-content"}
+
+components/layouts/AnimeFrame.tsx:
+  13        w="20vw"
+  14:       backgroundImage={`url('/images/communityList/${props.fileName}')`}
+  15        backgroundSize={"cover"}
+
+components/layouts/Primary.tsx:
+   3  import MainFeature from "../MainFeature";
+   4: import CommunityList from "../CommunityList";
+   5  
+
+  10        <MainFeature />
+  11:       <CommunityList />
+  12      </Box>
