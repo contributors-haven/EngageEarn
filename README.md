@@ -18,13 +18,7 @@
 
 ## Getting Started
 
-1. Move to frontend folder
-
-```
-cd frontend folder
-
-2. Yarn Command
-
+1. Yarn Command
 ```
 
 yarn dev
