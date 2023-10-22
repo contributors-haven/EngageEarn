@@ -22,6 +22,7 @@
     "@fontsource/poppins": "^4.5.10",
     "@rainbow-me/rainbowkit": "^1.1.2",
     "@sismo-core/sismo-connect-react": "^0.0.23",
+    "@tableland/sdk": "^4.5.3-dev.0",
     "@thirdweb-dev/react": "^3.12.1",
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
@@ -42,6 +43,7 @@
     "wagmi": "^1.4.5"
   },
   "devDependencies": {
+    "dotenv": "^16.3.1",
     "prettier": "^2.8.8"
   }
 }
