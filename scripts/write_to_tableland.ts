@@ -15,7 +15,11 @@ async function main() {
     const wallet = new Wallet(privateKey);
     // To avoid connecting to the browser wallet (locally, port 8545).
     // For example: "https://polygon-mumbai.g.alchemy.com/v2/YOUR_ALCHEMY_KEY"
-    const provider = getDefaultProvider(process.env.SEPOLIA_RPC_URL, {infura: process.env.INFURA_API_KEY});
+    //const provider = getDefaultProvider(process.env.SEPOLIA_RPC_URL, {infura: process.env.INFURA_API_KEY});
+    const provider = new ethers.providers.InfuraProvider(
+        "sepolia",
+        process.env.INFURA_API_KEY,
+      );
 
     const signer = wallet.connect(provider);
     // Connect to the database
